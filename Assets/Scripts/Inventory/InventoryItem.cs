@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[DisallowMultipleComponent]
-public class InventoryItem : MonoBehaviour
+[CreateAssetMenu(fileName ="Item",menuName ="Inventory/Item")]
+public class InventoryItem : ScriptableObject
 {
-
+	public GameObject WorldModel;
 }

@@ -19,7 +19,7 @@ public class Inventory : MonoBehaviour
 	[SerializeField] [Foldout("Gizmos")] private Color DetectedItemsGizmoColor = Color.blue;
 	[SerializeField] [Foldout("Gizmos")] private Color HoveredItemGizmoColor = Color.red;
 
-	private List<InventoryItem> ItemsInRange = new List<InventoryItem>();
+	private List<WorldItem> ItemsInRange = new List<WorldItem>();
 
 	private void Awake() => CleanInventory();//Items.ForEach(I => Debug.Log(I.Item.gameObject.scene.name));
 
@@ -48,7 +48,7 @@ public class Inventory : MonoBehaviour
 	{
 		var _ItemsInRange = Physics.OverlapCapsule(transform.position + ItemPickUpVerticalExtend * Vector3.up,
 						 transform.position + ItemPickUpVerticalExtend * Vector3.down,
-						 ItemPickUpRange).ToList().ConvertAll(Coll => Coll.GetComponent<InventoryItem>());
+						 ItemPickUpRange).ToList().ConvertAll(Coll => Coll.transform.parent?.GetComponent<WorldItem>() ?? null);
 		_ItemsInRange.RemoveAll(I => I == null);
 		ItemsInRange.RemoveAll(I => !_ItemsInRange.Contains(I));
 		_ItemsInRange.ForEach(I => { if (!ItemsInRange.Contains(I)) { ItemsInRange.Add(I); } });
@@ -57,16 +57,16 @@ public class Inventory : MonoBehaviour
 	public void OnClick(InputAction.CallbackContext CTX)
 	{
 		if (CTX.performed && MouseHoverMonitor.Inst.GameObject != null
-			&& MouseHoverMonitor.Inst.GameObject.TryGetComponent(out InventoryItem II)
-			&& ItemsInRange.Contains(II))
+			&& MouseHoverMonitor.Inst.GameObject.transform.parent.TryGetComponent(out WorldItem WI)
+			&& ItemsInRange.Contains(WI))
 		{
-			PickUpItem(II);
+			PickUpItem(WI);
 		}
 	}
 
-	public void PickUpItem(InventoryItem Item, int Count = 1)
+	public void PickUpItem(WorldItem Item, int Count = 1)
 	{
-		Items.Add(new InventoryItemSlot(Item, Count));
+		Items.Add(new InventoryItemSlot(Item.Item, Count));
 		Item.gameObject.SetActive(false);
 		CleanInventory();
 	}
@@ -81,7 +81,7 @@ public class Inventory : MonoBehaviour
 		{
 			ItemsInRange.ForEach(I =>
 			{
-				Gizmos.color = (MouseHoverMonitor.Inst.GameObject != I.gameObject) ? DetectedItemsGizmoColor : HoveredItemGizmoColor;
+				Gizmos.color = (MouseHoverMonitor.Inst.GameObject?.transform.parent?.gameObject != I.gameObject) ? DetectedItemsGizmoColor : HoveredItemGizmoColor;
 				Gizmos.DrawLine(transform.position, I.transform.position);
 			});
 		}
