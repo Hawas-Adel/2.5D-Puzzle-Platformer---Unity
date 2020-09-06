@@ -22,13 +22,34 @@ public class WorldItem : MonoBehaviour
 				_Item = value;
 				foreach (Transform child in transform)
 				{ DestroyImmediate(child.gameObject); }
-#if UNITY_EDITOR
+
 				if (_Item != null)
-				{ PrefabUtility.InstantiatePrefab(_Item.WorldModel, transform); }
+				{
+#if UNITY_EDITOR
+					PrefabUtility.InstantiatePrefab(_Item.WorldModel, transform);
 #endif
+					name = $"[Item] : {Item.name}";
+				}
+				else
+				{
+					name = "[Item]";
+				}
+
 			}
 			else
 			{ Debug.LogError("Don't change Item during runtime"); }
 		}
+	}
+
+	private void Reset()
+	{
+		Rigidbody RB = GetComponent<Rigidbody>();
+		if (RB == null)
+		{
+			RB = gameObject.AddComponent<Rigidbody>();
+		}
+		RB.constraints = RigidbodyConstraints.FreezePositionZ
+									   | RigidbodyConstraints.FreezeRotationX
+									   | RigidbodyConstraints.FreezeRotationY;
 	}
 }

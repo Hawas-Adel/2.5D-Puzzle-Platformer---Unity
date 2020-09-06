@@ -70,6 +70,24 @@ public class Door : MonoBehaviour
 		DoorStateInterpolant = Mathf.Lerp(InitialValue, TargetValue, 1);
 		yield return null;
 	}
+
+	private LocksManager LocksManager;
+	private void Start() => LocksManager = GetComponent<LocksManager>();
+
+	private void LateUpdate()
+	{
+		if (LocksManager != null)
+		{
+			if (LocksManager.LockState == LockState.Locked && DoorState == DoorState.Open)
+			{
+				DoorState = DoorState.Closed;
+			}
+			else if (LocksManager.LockState == LockState.UnLocked && DoorState == DoorState.Closed)
+			{
+				DoorState = DoorState.Open;
+			}
+		}
+	}
 }
 
 [System.Serializable]
