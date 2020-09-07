@@ -248,9 +248,11 @@ GameObject:
   - component: {fileID: 277413532}
   - component: {fileID: 277413531}
   - component: {fileID: 277413530}
+  - component: {fileID: 277413539}
   - component: {fileID: 277413534}
   - component: {fileID: 277413536}
   - component: {fileID: 277413535}
+  - component: {fileID: 277413538}
   - component: {fileID: 277413537}
   m_Layer: 0
   m_Name: '[Door]'
@@ -347,17 +349,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f194f12d6da85ab49a87b1590705bacb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DoorClosedTransform:
-    Position: {x: 5, y: 1.25, z: -0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 0.125, y: 2.5, z: 2}
-  DoorOpenedTransform:
-    Position: {x: 5, y: 1.25, z: 1}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 0.125, y: 2.5, z: 0.25}
+  TransformLerp: {fileID: 277413539}
   _DoorState: 0
-  _DoorStateInterpolant: 0
-  AnimationSpeed: 2
+  AnimationSpeed: 1
 --- !u!114 &277413535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,7 +394,40 @@ MonoBehaviour:
   RequiredItem:
     Item: {fileID: 11400000, guid: a02d7bc6bdf0c1948a4fd0c9b47e7800, type: 2}
     Count: 1
-  HalfExtents: {x: 1, y: 1.26, z: 1.13}
+--- !u!114 &277413538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277413529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e412c05a44f3fe478f811ff22d7e390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HalfExtents: {x: 1, y: 1.35, z: 1.6}
+--- !u!114 &277413539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277413529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13360e50dbd28a4ca3000ae92d00dfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartTransform:
+    Position: {x: 5, y: 1.25, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 0.125, y: 2.5, z: 2}
+  EndTransform:
+    Position: {x: 5, y: 1.25, z: 1}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 0.125, y: 2.5, z: 0.25}
+  _DoorStateInterpolant: 0
 --- !u!1 &300517235
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +441,7 @@ GameObject:
   - component: {fileID: 300517237}
   - component: {fileID: 300517236}
   - component: {fileID: 300517240}
+  - component: {fileID: 300517241}
   m_Layer: 9
   m_Name: '[Trigger]'
   m_TagString: Untagged
@@ -515,6 +543,18 @@ MonoBehaviour:
   _OnTriggerExit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &300517241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300517235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 247390cf5ce27f34caff0866535f14b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &367898707
 Mesh:
   m_ObjectHideFlags: 0
