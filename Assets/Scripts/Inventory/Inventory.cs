@@ -21,7 +21,11 @@ public class Inventory : MonoBehaviour
 
 	private List<WorldItem> ItemsInRange = new List<WorldItem>();
 
-	private void Awake() => CleanInventory();//Items.ForEach(I => Debug.Log(I.Item.gameObject.scene.name));
+	private void Start()
+	{
+		CleanInventory();//Items.ForEach(I => Debug.Log(I.Item.gameObject.scene.name));
+		MouseHoverMonitor.Inst.OnMouseClickGameObject.AddListener(OnClick);
+	}
 
 	public void CleanInventory()
 	{
@@ -54,11 +58,10 @@ public class Inventory : MonoBehaviour
 		_ItemsInRange.ForEach(I => { if (!ItemsInRange.Contains(I)) { ItemsInRange.Add(I); } });
 	}
 
-	public void OnClick(InputAction.CallbackContext CTX)
+	private void OnClick(GameObject GO)
 	{
-		if (CTX.performed && MouseHoverMonitor.Inst.GameObject != null
-			&& MouseHoverMonitor.Inst.GameObject.transform.parent.TryGetComponent(out WorldItem WI)
-			&& ItemsInRange.Contains(WI))
+		WorldItem WI = GO.GetComponentInParent<WorldItem>();
+		if (WI != null && ItemsInRange.Contains(WI))
 		{
 			PickUpItem(WI);
 		}
@@ -67,7 +70,7 @@ public class Inventory : MonoBehaviour
 	public void PickUpItem(WorldItem Item, int Count = 1)
 	{
 		Items.Add(new InventoryItemSlot(Item.Item, Count));
-		Item.gameObject.SetActive(false);
+		Item.gameObject.SetActive(false);//Destroy??
 		CleanInventory();
 	}
 

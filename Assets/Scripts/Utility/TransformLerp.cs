@@ -20,6 +20,19 @@ public class TransformLerp : MonoBehaviour
 		}
 	}
 
+	public IEnumerator SmoothDoorInterpolentChange(float TargetValue, float Speed = 1)
+	{
+		float InitialValue = DoorStateInterpolant;
+		for (float t = 0 ; t < 1 ; t += Speed * Time.deltaTime)
+		{
+			DoorStateInterpolant = Mathf.Lerp(InitialValue, TargetValue, t);
+			yield return null;
+		}
+		DoorStateInterpolant = Mathf.Lerp(InitialValue, TargetValue, 1);
+		yield return null;
+	}
+
+
 	[Button]
 	private void SetStartTransform() => StartTransform.FromTransform(transform);
 	[Button]

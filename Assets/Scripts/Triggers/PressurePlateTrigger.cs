@@ -7,21 +7,22 @@ using UnityEngine;
 public class PressurePlateTrigger : MonoBehaviour
 {
 	private Trigger Trigger;
+	private int NoOfCollidersOnTrigger = 0;
 	private void Awake() => Trigger = GetComponent<Trigger>();
 	private void OnTriggerEnter(Collider other)
 	{
-		if (Trigger.NoOfCollidersOnTrigger == 0)
+		if (NoOfCollidersOnTrigger == 0)
 		{
-			Trigger._OnTriggerEnter?.Invoke();
+			Trigger.OnTriggerON?.Invoke();
 		}
-		Trigger.NoOfCollidersOnTrigger = Mathf.Max(0, Trigger.NoOfCollidersOnTrigger + 1);
+		NoOfCollidersOnTrigger = Mathf.Max(0, NoOfCollidersOnTrigger + 1);
 	}
 	private void OnTriggerExit(Collider other)
 	{
-		Trigger.NoOfCollidersOnTrigger = Mathf.Max(0, Trigger.NoOfCollidersOnTrigger - 1);
-		if (Trigger.NoOfCollidersOnTrigger == 0)
+		NoOfCollidersOnTrigger = Mathf.Max(0, NoOfCollidersOnTrigger - 1);
+		if (NoOfCollidersOnTrigger == 0)
 		{
-			Trigger._OnTriggerExit?.Invoke();
+			Trigger.OnTriggerOFF?.Invoke();
 		}
 	}
 }

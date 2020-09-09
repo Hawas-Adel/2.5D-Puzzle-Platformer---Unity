@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class MouseHoverMonitor : MonoBehaviour
 {
@@ -16,13 +17,12 @@ public class MouseHoverMonitor : MonoBehaviour
 				_GameObject = value;
 				OnMouseHoverChange?.Invoke(_GameObject);
 			}
-
 		}
 	}
 	public UnityEvent<GameObject> OnMouseHoverChange;
+	public UnityEvent<GameObject> OnMouseClickGameObject;
 
 	private Camera Cam;
-	private InputActionsMap IAM;
 
 	#region Singlton
 	public static MouseHoverMonitor Inst { get; private set; }
@@ -31,36 +31,38 @@ public class MouseHoverMonitor : MonoBehaviour
 		if (Inst == null)
 			Inst = this;
 		else
-		{
 			Destroy(this);
-			return;
-		}
-		IAM.Enable();
 	}
 	private void OnDisable()
 	{
 		if (Inst == this)
 			Inst = null;
-		IAM.Disable();
 	}
 	#endregion
 
-	private void Awake()
+	private void Awake() => Cam = Camera.main;
+
+	public void OnPosition(InputAction.CallbackContext CTX)
 	{
-		IAM = new InputActionsMap();
-		Cam = Camera.main;
+		if (CTX.performed)
+		{
+			Ray Ray = Cam.ScreenPointToRay(CTX.ReadValue<Vector2>());
+			if (Physics.Raycast(Ray, out RaycastHit Hit, 20))
+			{
+				GameObject = Hit.collider.gameObject;
+			}
+			else
+			{
+				GameObject = null;
+			}
+		}
 	}
 
-	private void LateUpdate()
+	public void OnClick(InputAction.CallbackContext CTX)
 	{
-		Ray Ray = Cam.ScreenPointToRay(IAM.Pointer.Position.ReadValue<Vector2>());
-		if (Physics.Raycast(Ray, out RaycastHit Hit, 20))
+		if (CTX.performed && GameObject != null)
 		{
-			GameObject = Hit.collider.gameObject;
-		}
-		else
-		{
-			GameObject = null;
+			OnMouseClickGameObject.Invoke(GameObject);
 		}
 	}
 

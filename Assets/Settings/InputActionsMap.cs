@@ -33,14 +33,6 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""Click"",
-                    ""type"": ""Button"",
-                    ""id"": ""ad06b5fd-198f-4200-85e8-36a1061c0334"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -120,17 +112,6 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""60530e75-13c6-40cd-95a9-93fbc352fc82"",
-                    ""path"": ""<Pointer>/press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Click"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -143,6 +124,14 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""f4a0c827-715c-4860-bd8b-e87d90228db9"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""e9b58671-2114-45d8-822d-678d2c9ad6a9"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -158,6 +147,17 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
                     ""action"": ""Position"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ff91bd5d-959e-4575-b918-e119bf6e8bbc"",
+                    ""path"": ""<Pointer>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -168,10 +168,10 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movment = m_Player.FindAction("Movment", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         // Pointer
         m_Pointer = asset.FindActionMap("Pointer", throwIfNotFound: true);
         m_Pointer_Position = m_Pointer.FindAction("Position", throwIfNotFound: true);
+        m_Pointer_Click = m_Pointer.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -223,14 +223,12 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Movment;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Click;
     public struct PlayerActions
     {
         private @InputActionsMap m_Wrapper;
         public PlayerActions(@InputActionsMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movment => m_Wrapper.m_Player_Movment;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Click => m_Wrapper.m_Player_Click;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -246,9 +244,6 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @Click.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClick;
-                @Click.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClick;
-                @Click.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClick;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -259,9 +254,6 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @Click.started += instance.OnClick;
-                @Click.performed += instance.OnClick;
-                @Click.canceled += instance.OnClick;
             }
         }
     }
@@ -271,11 +263,13 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Pointer;
     private IPointerActions m_PointerActionsCallbackInterface;
     private readonly InputAction m_Pointer_Position;
+    private readonly InputAction m_Pointer_Click;
     public struct PointerActions
     {
         private @InputActionsMap m_Wrapper;
         public PointerActions(@InputActionsMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @Position => m_Wrapper.m_Pointer_Position;
+        public InputAction @Click => m_Wrapper.m_Pointer_Click;
         public InputActionMap Get() { return m_Wrapper.m_Pointer; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -288,6 +282,9 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
                 @Position.started -= m_Wrapper.m_PointerActionsCallbackInterface.OnPosition;
                 @Position.performed -= m_Wrapper.m_PointerActionsCallbackInterface.OnPosition;
                 @Position.canceled -= m_Wrapper.m_PointerActionsCallbackInterface.OnPosition;
+                @Click.started -= m_Wrapper.m_PointerActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_PointerActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_PointerActionsCallbackInterface.OnClick;
             }
             m_Wrapper.m_PointerActionsCallbackInterface = instance;
             if (instance != null)
@@ -295,6 +292,9 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
                 @Position.started += instance.OnPosition;
                 @Position.performed += instance.OnPosition;
                 @Position.canceled += instance.OnPosition;
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
             }
         }
     }
@@ -303,10 +303,10 @@ public class @InputActionsMap : IInputActionCollection, IDisposable
     {
         void OnMovment(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnClick(InputAction.CallbackContext context);
     }
     public interface IPointerActions
     {
         void OnPosition(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
 }

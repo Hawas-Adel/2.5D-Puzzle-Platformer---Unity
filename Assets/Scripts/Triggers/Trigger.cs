@@ -6,22 +6,20 @@ using UnityEngine.Events;
 [DisallowMultipleComponent]
 public class Trigger : MonoBehaviour
 {
-	public UnityEvent _OnTriggerEnter;
-	public UnityEvent _OnTriggerExit;
-
-	[System.NonSerialized] public int NoOfCollidersOnTrigger = 0;
+	public UnityEvent OnTriggerON;
+	public UnityEvent OnTriggerOFF;
 
 	private void Reset() => gameObject.layer = 9;
 
-	public void DebugCollision(bool IsEnter)
+	public void DebugTrigger(bool IsEnter)
 	{
 		if (IsEnter)
 		{
-			Debug.Log($"{name} Entered");
+			Debug.Log($"{name} -> ON");
 		}
 		else
 		{
-			Debug.Log($"{name} Exited");
+			Debug.Log($"{name} -> OFF");
 		}
 	}
 }
