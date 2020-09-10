@@ -642,7 +642,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh19814
+  m_Name: pb_Mesh19818
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1432,6 +1432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1380460e90634094aa98843f2d845c32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SwitchInteractionRange: 1.5
 --- !u!1 &1170963720
 GameObject:
   m_ObjectHideFlags: 0
