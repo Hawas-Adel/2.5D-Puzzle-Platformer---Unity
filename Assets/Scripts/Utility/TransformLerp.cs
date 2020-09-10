@@ -9,28 +9,41 @@ public class TransformLerp : MonoBehaviour
 	[SerializeField] private TransformState StartTransform = default;
 	[SerializeField] private TransformState EndTransform = default;
 
-	[SerializeField] [PropertyBackingField(typeof(RangeAttribute), 0f, 1f)] private float _DoorStateInterpolant = 0;
-	public float DoorStateInterpolant
+	[SerializeField] [PropertyBackingField(typeof(RangeAttribute), 0f, 1f)] private float _StateInterpolant = 0;
+	public float StateInterpolant
 	{
-		get => _DoorStateInterpolant;
+		get => _StateInterpolant;
 		set
 		{
-			_DoorStateInterpolant = Mathf.Clamp01(value);
-			TransformState.Lerp(StartTransform, EndTransform, _DoorStateInterpolant).ToTransform(transform);
+			_StateInterpolant = Mathf.Clamp01(value);
+			TransformState.Lerp(StartTransform, EndTransform, _StateInterpolant).ToTransform(transform);
 		}
 	}
 
-	public IEnumerator SmoothDoorInterpolentChange(float TargetValue, float Speed = 1)
+	[SerializeField] private bool ResetOnStart = true;
+	[SerializeField] [Min(0)] private float SlideSpeed = 1;
+
+	private void Start()
 	{
-		float InitialValue = DoorStateInterpolant;
-		for (float t = 0 ; t < 1 ; t += Speed * Time.deltaTime)
+		if (ResetOnStart)
 		{
-			DoorStateInterpolant = Mathf.Lerp(InitialValue, TargetValue, t);
+			StateInterpolant = 0;
+		}
+	}
+
+	private IEnumerator SmoothInterpolentChange(float TargetValue)
+	{
+		float InitialValue = StateInterpolant;
+		for (float t = 0 ; t < 1 ; t += SlideSpeed * Time.deltaTime)
+		{
+			StateInterpolant = Mathf.Lerp(InitialValue, TargetValue, t);
 			yield return null;
 		}
-		DoorStateInterpolant = Mathf.Lerp(InitialValue, TargetValue, 1);
+		StateInterpolant = TargetValue;
 		yield return null;
 	}
+	public void SlideToStartTransform() => StartCoroutine(SmoothInterpolentChange(0));
+	public void SlideToEndTransform() => StartCoroutine(SmoothInterpolentChange(1));
 
 
 	[Button]

@@ -18,21 +18,19 @@ public class Door : MonoBehaviour
 			{
 				case DoorState.Closed:
 					if (Application.isPlaying)
-						StartCoroutine(TransformLerp.SmoothDoorInterpolentChange(0, AnimationSpeed));
+						TransformLerp.SlideToStartTransform();
 					else
-						TransformLerp.DoorStateInterpolant = 0;
+						TransformLerp.StateInterpolant = 0;
 					break;
 				case DoorState.Open:
 					if (Application.isPlaying)
-						StartCoroutine(TransformLerp.SmoothDoorInterpolentChange(1, AnimationSpeed));
+						TransformLerp.SlideToEndTransform();
 					else
-						TransformLerp.DoorStateInterpolant = 1;
+						TransformLerp.StateInterpolant = 1;
 					break;
 			}
 		}
 	}
-
-	[SerializeField] [Min(0)] [Label("Open/Close Speed")] private float AnimationSpeed = 1;
 
 	private LocksManager LocksManager;
 	private void Start() => LocksManager = GetComponent<LocksManager>();

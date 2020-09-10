@@ -201,7 +201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86295c19b8dd51045add9dfdfaa6813e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Lever: {fileID: 1212580949}
   IsActive: 0
 --- !u!114 &82087442
 MonoBehaviour:
@@ -217,10 +216,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnTriggerON:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1212580949}
+        m_TargetAssemblyTypeName: TransformLerp, Assembly-CSharp
+        m_MethodName: SlideToEndTransform
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 1
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnTriggerOFF:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1212580949}
+        m_TargetAssemblyTypeName: TransformLerp, Assembly-CSharp
+        m_MethodName: SlideToStartTransform
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 1
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!136 &82087443
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -432,7 +455,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransformLerp: {fileID: 277413539}
   _DoorState: 0
-  AnimationSpeed: 1
 --- !u!114 &277413535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,7 +530,9 @@ MonoBehaviour:
     Position: {x: 5, y: 1.25, z: 1}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 0.125, y: 2.5, z: 0.25}
-  _DoorStateInterpolant: 0
+  _StateInterpolant: 0
+  ResetOnStart: 0
+  SlideSpeed: 1
 --- !u!1 &300517235
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,6 +545,7 @@ GameObject:
   - component: {fileID: 300517238}
   - component: {fileID: 300517237}
   - component: {fileID: 300517236}
+  - component: {fileID: 300517242}
   - component: {fileID: 300517240}
   - component: {fileID: 300517241}
   m_Layer: 9
@@ -620,10 +645,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnTriggerON:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 300517242}
+        m_TargetAssemblyTypeName: TransformLerp, Assembly-CSharp
+        m_MethodName: SlideToEndTransform
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 3
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnTriggerOFF:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 300517242}
+        m_TargetAssemblyTypeName: TransformLerp, Assembly-CSharp
+        m_MethodName: SlideToStartTransform
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 3
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &300517241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,6 +685,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 247390cf5ce27f34caff0866535f14b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &300517242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300517235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13360e50dbd28a4ca3000ae92d00dfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartTransform:
+    Position: {x: -1.75, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 0.13, z: 1}
+  EndTransform:
+    Position: {x: -1.75, y: -0.0625, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 0.13, z: 1}
+  _StateInterpolant: 0
+  ResetOnStart: 1
+  SlideSpeed: 3
 --- !u!43 &367898707
 Mesh:
   m_ObjectHideFlags: 0
@@ -1548,7 +1620,9 @@ MonoBehaviour:
     Position: {x: -0.25, y: 0.5, z: 0}
     Rotation: {x: -0, y: -0, z: 30}
     Scale: {x: 0.125, y: 0.5, z: 0.125}
-  _DoorStateInterpolant: 0
+  _StateInterpolant: 0
+  ResetOnStart: 1
+  SlideSpeed: 2
 --- !u!23 &1212580950
 MeshRenderer:
   m_ObjectHideFlags: 0
